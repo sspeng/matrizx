@@ -1,4 +1,4 @@
-#MATRIZX
+# MATRIZX
 
 This is just a little project I'm working on mostly because I just wanted to show my math teacher a program about matrices.
 
