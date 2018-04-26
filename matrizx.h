@@ -11,6 +11,7 @@ struct matrix {
 	int col;
 };
 
+float m_det(matrix *m);
 
 float **m_alloc_array(int row, int col)
 {
@@ -245,11 +246,43 @@ matrix *m_transpose(matrix *m)
 	return result;
 }
 
+float m_cof(matrix *m,int row, int col)
+{
+	/* Returns the cofactor of the element row,col of matrix m */
+
+	int i,j;
+	matrix *d;
+
+	if(m->row != m->col) {
+		printf("\nCofactor calculation error: non square matrix\n");
+		exit(1);
+	}
+
+	d = m_copy(m);
+
+	d->row -= 1;
+	d->col -= 1;
+
+	for(i=row; i<(d->row); i++) {
+		d->array[i] = d->array[i+1];
+	}
+
+
+	for(i=0; i<(d->row); i++) {
+		for(j=col; j<(d->col); j++) {
+				d->array[i][j] = d->array[i][j+1];
+		}
+	}
+
+	return pow(-1,row+col) * m_det(d);
+}
+
+
+
 float m_det(matrix *m)
 {
 	/* Returns the determinant of the matrix m */
-	
-	matrix *d;
+
 	int i,j;
 	float result=0;
 
@@ -266,17 +299,9 @@ float m_det(matrix *m)
 		return (m->array[0][0]*m->array[1][1]) - (m->array[0][1]*m->array[1][0]);
 	}
 
-	d = m_new(m->row-1,m->col-1);
-
-	for(i=0; i<(m->row)-1; i++) {
-		for(j=0; j<(m->col)-1; j++) {
-			d->array[i][j] = m->array[i+1][j+1];
-		}
-	}
-
 	i = 0;
 	for(j=0; j<(m->col); j++) {
-		result+=m->array[i][j]*(pow(-1,i+j+2)*m_det(d));
+		result+= m->array[i][j]*m_cof(m,i,j);
 	}
 
 	return result;
