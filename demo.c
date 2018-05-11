@@ -26,18 +26,22 @@ int main(void)
 
 	/* Print both matrices */
     printf("Matrix A:\n");
-    m_printf(a); 
+    m_printf(a);
 
     printf("\nMatrix B:\n");
     m_printf(b);
 
-	
+
     result = m_multiplication(a,b); // multiply matrices and return a pointer to the result
 
     printf("\nMatrix A*B:\n");
     m_printf(result);
 
     printf("\nDeterminant of the result: %f\n\n",m_det(result)); // get determinant of the result
+
+    m_free(a);
+    m_free(b);
+    m_free(result);
 
     return 0;
 }
